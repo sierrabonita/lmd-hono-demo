@@ -1,0 +1,9 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": ["fileb", "hono", "itty", "multibyes", "tfstate", "tfvars", "vite"],
+    "ignoreWords": [],
+    "import": []
+}

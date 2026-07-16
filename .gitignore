@@ -1,0 +1,45 @@
+# prod
+dist/
+lambda.zip
+
+# OS / installers
+*.pkg
+*.dmg
+
+# dev
+.yarn/
+!.yarn/releases
+.vscode/*
+!.vscode/launch.json
+!.vscode/*.code-snippets
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf
+
+# deps
+node_modules/
+
+# env
+.env
+.env.production
+
+# logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# misc
+.DS_Store
+
+# Terraform (機密情報・一時ファイル)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# build artifacts
+deploy.zip
