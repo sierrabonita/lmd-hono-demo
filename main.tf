@@ -75,6 +75,16 @@ resource "aws_lambda_permission" "allow_public_function_url" {
   function_url_auth_type = "NONE"
 }
 
+# 2025年10月以降、Function URLの呼び出しには lambda:InvokeFunction も必要
+resource "aws_lambda_permission" "allow_public_invoke_function" {
+  statement_id  = "FunctionURLAllowInvokeFunction"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.hono_lambda.function_name
+  principal     = "*"
+}
+
+
+
 # 構築されたFunction URLの出力
 output "function_url" {
   description = "The URL to invoke the Hono Lambda function"
