@@ -1,11 +1,11 @@
 # Lambda関数の定義
 resource "aws_lambda_function" "hono_lambda" {
-  filename         = "../deploy.zip"
+  filename         = "../../../deploy.zip"
   function_name    = "${var.project_name}-${var.environment}-api"
   role             = aws_iam_role.lambda_role.arn
   handler          = "index.handler" # deploy.zip 直下の index.js の handler
   runtime          = "nodejs20.x"
-  source_code_hash = filebase64sha256("../deploy.zip")
+  source_code_hash = filebase64sha256("../../../deploy.zip")
 
   environment {
     variables = {
