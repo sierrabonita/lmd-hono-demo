@@ -2,16 +2,22 @@
   "name": "lmd-hono-demo",
   "type": "module",
   "scripts": {
+    "dev": "DYNAMODB_ENDPOINT=http://localhost:8000 TABLE_NAME=local-table tsx watch src/local.ts",
+    "db:setup": "./scripts/setup-db.sh",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down",
     "build": "esbuild --bundle --outfile=./dist/index.js --platform=node --target=node20 ./src/index.ts",
     "zip": "zip -j lambda.zip dist/index.js",
     "update": "aws lambda update-function-code --zip-file fileb://lambda.zip --function-name hello",
     "deploy": "run-s build zip update"
   },
   "devDependencies": {
+    "@hono/node-server": "^2.0.10",
     "@types/node": "^26.1.1",
     "cspell": "^10.0.1",
     "esbuild": "^0.28.1",
-    "npm-run-all2": "^9.0.2"
+    "npm-run-all2": "^9.0.2",
+    "tsx": "^4.23.1"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1090.0",

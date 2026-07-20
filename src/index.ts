@@ -3,10 +3,23 @@ import { handle } from 'hono/aws-lambda'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocumentClient, PutCommand, GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb'
 
-const client = new DynamoDBClient({})
+// ローカル開発用にエンドポイントが指定されている場合はそちらを向く
+const isLocal = !!process.env.DYNAMODB_ENDPOINT
+const client = new DynamoDBClient(
+  isLocal
+    ? {
+        endpoint: process.env.DYNAMODB_ENDPOINT,
+        region: 'local',
+        credentials: {
+          accessKeyId: 'dummy',
+          secretAccessKey: 'dummy',
+        },
+      }
+    : {}
+)
 const ddbDocClient = DynamoDBDocumentClient.from(client)
 
-const app = new Hono()
+export const app = new Hono()
 
 const tableName = process.env.TABLE_NAME || 'local-table'
 
