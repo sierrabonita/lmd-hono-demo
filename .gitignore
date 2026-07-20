@@ -43,3 +43,6 @@ lerna-debug.log*
 
 # build artifacts
 deploy.zip
+
+# DynamoDB Local Data
+dynamodb-data/
