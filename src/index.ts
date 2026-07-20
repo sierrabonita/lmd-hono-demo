@@ -50,9 +50,9 @@ app.post('/users', async (c) => {
     )
 
     return c.json({ message: 'User created successfully', id }, 201)
-  } catch (err) {
+  } catch (err: any) {
     console.error(err)
-    return c.json({ error: 'Internal Server Error' }, 500)
+    return c.json({ error: 'Internal Server Error', details: err.message }, 500)
   }
 })
 
