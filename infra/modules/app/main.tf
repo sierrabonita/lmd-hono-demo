@@ -9,7 +9,8 @@ resource "aws_lambda_function" "hono_lambda" {
 
   environment {
     variables = {
-      NODE_ENV = var.environment == "prod" ? "production" : "development"
+      NODE_ENV   = var.environment == "prod" ? "production" : "development"
+      TABLE_NAME = aws_dynamodb_table.main.name
     }
   }
 }
