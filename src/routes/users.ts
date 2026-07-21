@@ -4,9 +4,9 @@ import { PutCommand, GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient, tableName } from '../db/client'
 import { protectedRoute } from '../middleware/auth'
 
-const users = new Hono()
+const app = new Hono()
 
-users.post('/', async (c) => {
+app.post('/', async (c) => {
   try {
     const body = await c.req.json()
     const { id, name, password } = body
@@ -38,7 +38,7 @@ users.post('/', async (c) => {
   }
 })
 
-users.get('/:id', protectedRoute, async (c) => {
+app.get('/:id', protectedRoute, async (c) => {
   try {
     const id = c.req.param('id')
     
@@ -63,7 +63,7 @@ users.get('/:id', protectedRoute, async (c) => {
   }
 })
 
-users.get('/', protectedRoute, async (c) => {
+app.get('/', protectedRoute, async (c) => {
   try {
     const result = await ddbDocClient.send(
       // TODO: Queryに変更予定
@@ -79,4 +79,4 @@ users.get('/', protectedRoute, async (c) => {
   }
 })
 
-export default users
+export default app

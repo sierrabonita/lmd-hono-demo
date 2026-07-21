@@ -5,9 +5,9 @@ import { sign } from 'hono/jwt'
 import { ddbDocClient, tableName } from '../db/client'
 import { JWT_SECRET } from '../middleware/auth'
 
-const auth = new Hono()
+const app = new Hono()
 
-auth.post('/login', async (c) => {
+app.post('/login', async (c) => {
   try {
     const body = await c.req.json()
     const { id, password } = body
@@ -50,4 +50,4 @@ auth.post('/login', async (c) => {
   }
 })
 
-export default auth
+export default app
