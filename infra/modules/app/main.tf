@@ -15,14 +15,14 @@ resource "aws_lambda_function" "hono_lambda" {
   }
 }
 
-# Function URLの設定（認証なし・CORS許可）
+# Function URLの設定（CloudFront OAC経由のためIAM認証）
 resource "aws_lambda_function_url" "hono_lambda_url" {
   function_name      = aws_lambda_function.hono_lambda.function_name
-  authorization_type = "NONE"
+  authorization_type = "AWS_IAM"
 
   cors {
     allow_credentials = false
-    allow_origins     = ["*"] # React(Vite)のローカル開発環境や静的サイトからのアクセスを許可
+    allow_origins     = ["*"]
     allow_methods     = ["*"]
     allow_headers     = ["*"]
     expose_headers    = ["keep-alive", "date"]
@@ -30,19 +30,21 @@ resource "aws_lambda_function_url" "hono_lambda_url" {
   }
 }
 
-# Function URLへのパブリックアクセスを許可するリソースベースポリシー
-resource "aws_lambda_permission" "allow_public_function_url" {
-  statement_id           = "FunctionURLAllowPublicAccess"
+# CloudFrontからのFunction URLアクセスを許可するリソースベースポリシー
+resource "aws_lambda_permission" "allow_cloudfront_function_url" {
+  statement_id           = "FunctionURLAllowCloudFront"
   action                 = "lambda:InvokeFunctionUrl"
   function_name          = aws_lambda_function.hono_lambda.function_name
-  principal              = "*"
-  function_url_auth_type = "NONE"
+  principal              = "cloudfront.amazonaws.com"
+  function_url_auth_type = "AWS_IAM"
+  source_arn             = aws_cloudfront_distribution.main.arn
 }
 
 # 2025年10月以降、Function URLの呼び出しには lambda:InvokeFunction も必要
-resource "aws_lambda_permission" "allow_public_invoke_function" {
-  statement_id  = "FunctionURLAllowInvokeFunction"
+resource "aws_lambda_permission" "allow_cloudfront_invoke_function" {
+  statement_id  = "AllowCloudFrontInvoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.hono_lambda.function_name
-  principal     = "*"
+  principal     = "cloudfront.amazonaws.com"
+  source_arn    = aws_cloudfront_distribution.main.arn
 }
